@@ -1,0 +1,55 @@
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+
+const choices = ['가위', '바위', '보'];
+
+const RockPaperScissorsGame = () => {
+  const [userChoice, setUserChoice] = useState(null);
+  const [computerChoice, setComputerChoice] = useState(null);
+  const [result, setResult] = useState('');
+
+  const playGame = (userSelection) => {
+    const computerSelection = choices[Math.floor(Math.random() * 3)];
+    setUserChoice(userSelection);
+    setComputerChoice(computerSelection);
+    setResult(getResult(userSelection, computerSelection));
+  };
+
+  const getResult = (user, computer) => {
+    if (user === computer) return '무승부!';
+    if (
+      (user === '가위' && computer === '보') ||
+      (user === '바위' && computer === '가위') ||
+      (user === '보' && computer === '바위')
+    ) {
+      return '이겼습니다!';
+    }
+    return '졌습니다!';
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6">가위바위보 게임</h1>
+      <div className="mb-4">
+        {choices.map((choice) => (
+          <Button
+            key={choice}
+            onClick={() => playGame(choice)}
+            className="mx-2"
+          >
+            {choice}
+          </Button>
+        ))}
+      </div>
+      {userChoice && computerChoice && (
+        <div className="text-center">
+          <p className="text-xl mb-2">당신의 선택: {userChoice}</p>
+          <p className="text-xl mb-2">컴퓨터의 선택: {computerChoice}</p>
+          <p className="text-2xl font-bold mt-4">{result}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default RockPaperScissorsGame;
